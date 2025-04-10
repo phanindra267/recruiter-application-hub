@@ -1,12 +1,32 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Dashboard from "./pages/Dashboard";
+import JobsList from "./pages/jobs/JobsList";
+import CreateJob from "./pages/jobs/CreateJob";
+import ApplicationsList from "./pages/applications/ApplicationsList";
+import ApplicationDetail from "./pages/applications/ApplicationDetail";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Simple authentication check
+const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  const isAuthenticated = localStorage.getItem("recruiterUser") !== null;
+  
+  // If not authenticated, redirect to login
+  if (!isAuthenticated) {
+    return <Navigate to="/auth/login" replace />;
+  }
+
+  return children;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -15,8 +35,62 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Auth Routes */}
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route 
+            path="/auth/logout" 
+            element={
+              <Navigate 
+                to="/auth/login"
+                replace
+              />
+            } 
+          />
+          
+          {/* Protected Routes */}
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/jobs" 
+            element={
+              <ProtectedRoute>
+                <JobsList />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/jobs/create" 
+            element={
+              <ProtectedRoute>
+                <CreateJob />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/applications" 
+            element={
+              <ProtectedRoute>
+                <ApplicationsList />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/applications/:id" 
+            element={
+              <ProtectedRoute>
+                <ApplicationDetail />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Catch-all Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
