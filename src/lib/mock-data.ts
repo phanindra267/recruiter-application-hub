@@ -1,4 +1,3 @@
-
 // Mock data for development and demonstration
 import { subDays, subHours, addDays } from "date-fns";
 
@@ -80,13 +79,17 @@ export const applications = Array.from({ length: 30 }, (_, i) => {
   const jobIndex = i % jobs.length;
   const daysAgo = Math.floor(Math.random() * 30);
   
+  // Ensure status is one of the valid options
+  const statusOptions = ["applied", "reviewing", "shortlisted", "rejected", "hired"] as const;
+  const status = statusOptions[i % 5];
+  
   return {
     id: generateId('application', i + 1),
     candidateId: candidates[candidateIndex].id,
     candidateName: candidates[candidateIndex].name,
     jobId: jobs[jobIndex].id,
     jobTitle: jobs[jobIndex].title,
-    status: ["applied", "reviewing", "shortlisted", "rejected", "hired"][i % 5],
+    status,
     date: subDays(new Date(), daysAgo),
     notes: i % 3 === 0 ? "Candidate has excellent experience and seems like a good culture fit." : "",
     rating: Math.floor(Math.random() * 5) + 1

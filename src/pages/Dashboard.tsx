@@ -8,6 +8,15 @@ import { RecentApplications } from "@/components/dashboard/RecentApplications";
 import { dashboardStats, recentApplicationsList } from "@/lib/mock-data";
 
 export default function Dashboard() {
+  // Ensure the application list has the correct types
+  const typedApplicationsList = recentApplicationsList.map(app => ({
+    id: app.id,
+    candidateName: app.candidateName,
+    jobTitle: app.jobTitle,
+    status: app.status as "applied" | "reviewing" | "shortlisted" | "rejected" | "hired",
+    date: app.date
+  }));
+
   return (
     <MainLayout>
       <div className="flex flex-col gap-5">
@@ -113,7 +122,7 @@ export default function Dashboard() {
         
         {/* Recent Applications */}
         <div className="rounded-xl border bg-card p-4">
-          <RecentApplications applications={recentApplicationsList} />
+          <RecentApplications applications={typedApplicationsList} />
         </div>
       </div>
     </MainLayout>
