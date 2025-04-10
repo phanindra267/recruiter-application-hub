@@ -118,7 +118,7 @@ export default function ApplicationsList() {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all">All Statuses</SelectItem>
                 <SelectItem value="applied">Applied</SelectItem>
                 <SelectItem value="reviewing">Reviewing</SelectItem>
                 <SelectItem value="shortlisted">Shortlisted</SelectItem>
@@ -139,7 +139,7 @@ export default function ApplicationsList() {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Jobs</SelectItem>
+                <SelectItem value="all">All Jobs</SelectItem>
                 {jobs.map((job) => (
                   <SelectItem key={job.id} value={job.id}>
                     {job.title}
