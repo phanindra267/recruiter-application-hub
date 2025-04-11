@@ -23,10 +23,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { format } from "date-fns";
 import MainLayout from "@/components/layout/MainLayout";
 import { applications, candidates, jobs } from "@/lib/mock-data";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import SendEmailForm from "@/components/email/SendEmailForm";
 
 const statusColors: Record<string, string> = {
   applied: "bg-blue-100 text-blue-800",
@@ -56,7 +65,10 @@ export default function ApplicationDetail() {
   const job = jobs.find((j) => j.id === application?.jobId);
   
   const [note, setNote] = useState(application?.notes || "");
-  const [currentStatus, setCurrentStatus] = useState(application?.status || "applied");
+  const [currentStatus, setCurrentStatus] = useState<"applied" | "reviewing" | "shortlisted" | "rejected" | "hired">(
+    (application?.status as "applied" | "reviewing" | "shortlisted" | "rejected" | "hired") || "applied"
+  );
+  const [emailDialogOpen, setEmailDialogOpen] = useState(false);
 
   if (!application || !candidate || !job) {
     return (
@@ -74,7 +86,7 @@ export default function ApplicationDetail() {
     );
   }
 
-  const handleStatusChange = (newStatus: string) => {
+  const handleStatusChange = (newStatus: "applied" | "reviewing" | "shortlisted" | "rejected" | "hired") => {
     setCurrentStatus(newStatus);
     toast({
       title: "Status updated",
@@ -173,11 +185,27 @@ export default function ApplicationDetail() {
                     <Download className="mr-2 h-4 w-4" /> Resume
                   </a>
                 </Button>
-                <Button variant="outline" asChild>
-                  <a href={`mailto:${candidate.email}`}>
-                    <MessageSquare className="mr-2 h-4 w-4" /> Contact
-                  </a>
-                </Button>
+                <Dialog open={emailDialogOpen} onOpenChange={setEmailDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">
+                      <Mail className="mr-2 h-4 w-4" /> Email
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[600px]">
+                    <DialogHeader>
+                      <DialogTitle>Send Email to Candidate</DialogTitle>
+                      <DialogDescription>
+                        Send an email to {candidate.name} regarding their application.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <SendEmailForm 
+                      candidateEmail={candidate.email}
+                      candidateName={candidate.name}
+                      defaultTemplate="custom"
+                      onClose={() => setEmailDialogOpen(false)}
+                    />
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>

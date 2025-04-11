@@ -13,6 +13,8 @@ import ApplicationDetail from "./pages/applications/ApplicationDetail";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import NotFound from "./pages/NotFound";
+import SettingsPage from "./pages/settings/SettingsPage";
+import SessionsPage from "./pages/settings/SessionsPage";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +88,24 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <ApplicationDetail />
+              </ProtectedRoute>
+            } 
+          />
+          
+          {/* Settings Routes */}
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/settings/sessions" 
+            element={
+              <ProtectedRoute>
+                <SessionsPage />
               </ProtectedRoute>
             } 
           />

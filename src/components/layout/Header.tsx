@@ -1,5 +1,5 @@
 
-import { Bell, User } from "lucide-react";
+import { Bell, Mail, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -33,12 +33,27 @@ export default function Header({ user }: HeaderProps) {
         </h1>
       </div>
       <div className="flex items-center gap-4">
+        <Link to="/settings">
+          <Button variant="outline" size="icon">
+            <Settings className="h-5 w-5" />
+            <span className="sr-only">Settings</span>
+          </Button>
+        </Link>
+        
+        <Link to="/settings">
+          <Button variant="outline" size="icon">
+            <Mail className="h-5 w-5" />
+            <span className="sr-only">Emails</span>
+          </Button>
+        </Link>
+        
         <Button variant="outline" size="icon" className="relative">
           <Bell className="h-5 w-5" />
           <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-recruiter-600 text-xs text-white">
             3
           </span>
         </Button>
+        
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -72,8 +87,12 @@ export default function Header({ user }: HeaderProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to="/settings">Settings</Link>
+              <Link to="/settings">Email Settings</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/settings/sessions">Active Sessions</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <Link to="/auth/logout">Logout</Link>
             </DropdownMenuItem>
