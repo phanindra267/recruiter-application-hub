@@ -16,7 +16,14 @@ import NotFound from "./pages/NotFound";
 import SettingsPage from "./pages/settings/SettingsPage";
 import SessionsPage from "./pages/settings/SessionsPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Simple authentication check
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {

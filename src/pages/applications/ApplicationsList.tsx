@@ -108,8 +108,8 @@ export default function ApplicationsList() {
           
           <div className="flex w-full flex-1 gap-2 md:w-auto md:justify-end">
             <Select
-              value={statusFilter || ""}
-              onValueChange={(value) => setStatusFilter(value || null)}
+              value={statusFilter || "all_statuses"}
+              onValueChange={(value) => setStatusFilter(value === "all_statuses" ? null : value)}
             >
               <SelectTrigger className="w-[180px]">
                 <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ export default function ApplicationsList() {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Statuses</SelectItem>
+                <SelectItem value="all_statuses">All Statuses</SelectItem>
                 <SelectItem value="applied">Applied</SelectItem>
                 <SelectItem value="reviewing">Reviewing</SelectItem>
                 <SelectItem value="shortlisted">Shortlisted</SelectItem>
@@ -128,8 +128,8 @@ export default function ApplicationsList() {
             </Select>
             
             <Select
-              value={jobFilter || ""}
-              onValueChange={(value) => setJobFilter(value || null)}
+              value={jobFilter || "all_jobs"}
+              onValueChange={(value) => setJobFilter(value === "all_jobs" ? null : value)}
             >
               <SelectTrigger className="w-[220px]">
                 <div className="flex items-center gap-2 truncate">
@@ -139,7 +139,7 @@ export default function ApplicationsList() {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Jobs</SelectItem>
+                <SelectItem value="all_jobs">All Jobs</SelectItem>
                 {jobs.map((job) => (
                   <SelectItem key={job.id} value={job.id}>
                     {job.title}

@@ -155,7 +155,7 @@ export function DataTable<T>({
               }}
             >
               <SelectTrigger className="h-8 w-[70px]">
-                <SelectValue placeholder={pageSize} />
+                <SelectValue placeholder={String(pageSize)} />
               </SelectTrigger>
               <SelectContent side="top">
                 {pageSizeOptions.map((size) => (
